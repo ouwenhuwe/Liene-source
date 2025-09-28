@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打印帮助中心</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* 头部样式 */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 22px;
+            font-weight: 500;
+            color: #ff6700;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #ff6700;
+        }
+        
+        /* 搜索区域样式 */
+        .search-section {
+            background-color: #f5f5f5;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .search-section h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+        
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 24px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .search-box input:focus {
+            border-color: #ff6700;
+        }
+        
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background-color: #ff6700;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 7px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-box button:hover {
+            background-color: #f25807;
+        }
+        
+        /* 主要内容区域 */
+        .main-content {
+            padding: 40px 0;
+        }
+        
+        .category-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #333;
+        }
+        
+        .category-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .category-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .category-card p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .category-card a {
+            color: #ff6700;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .category-card a::after {
+            content: ">";
+            margin-left: 5px;
+        }
+        
+        /* 热门问题区域 */
+        .faq-section {
+            margin-bottom: 40px;
+        }
+        
+        .faq-list {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        
+        .faq-question {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .faq-question:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .faq-question h4 {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        }
+        
+        .faq-answer.active {
+            padding: 0 20px 15px;
+            max-height: 200px;
+        }
+        
+        /* 底部样式 */
+        footer {
+            background-color: #fff;
+            padding: 30px 0;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 40px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-right: 20px;
+        }
+        
+        .footer-links a {
+            font-size: 14px;
+            color: #666;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #ff6700;
+        }
+        
+        .copyright {
+            font-size: 14px;
+            color: #999;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            .nav-links li {
+                margin: 0 10px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-links {
+                margin-bottom: 15px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmNjcwMCIgZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgMTguNWMtNC42OSAwLTguNS0zLjgxLTguNS04LjVTNy4zMSAzLjUgMTIgMy41czguNSAzLjgxIDguNSA4LjUtMy44MSA4LjUtOC41IDguNXptLTMuNS05YTEuNSAxLjUgMCAxMDAtMyAxLjUgMS41IDAgMDAwIDN6bTcgMGExLjUgMS41IDAgMTAwLTMgMS41IDEuNSAwIDAwMCAzeiIvPjwvc3ZnPg==" alt="小米Logo">
+                    <h1>Liene打印帮助中心</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">常见问题</a></li>
+                    <li><a href="#">使用教程</a></li>
+                    <li><a href="#">故障排除</a></li>
+                    <li><a href="#">联系我们</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- 搜索区域 -->
+    <section class="search-section">
+        <div class="container">
+            <h2>如何帮助您解决问题？</h2>
+            <div class="search-box">
+                <input type="text" placeholder="搜索问题或关键词...">
+                <button>搜索</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+        <div class="container">
+            <!-- 分类区域 -->
+            <section class="category-section">
+                <h2 class="section-title">问题分类</h2>
+                <div class="category-cards">
+                    <div class="category-card">
+                        <h3>打印机设置</h3>
+                        <p>了解如何设置和连接您的小米打印机</p>
+                        <a href="#">查看详情</a>
+                    </div>
+                    <div class="category-card">
+                        <h3>打印问题</h3>
+                        <p>解决打印过程中遇到的各种问题</p>
+                        <a href="#">查看详情</a>
+                    </div>
+                    <div class="category-card">
+                        <h3>耗材更换</h3>
+                        <p>如何更换墨盒、纸张等打印耗材</p>
+                        <a href="#">查看详情</a>
+                    </div>
+                    <div class="category-card">
+                        <h3>手机打印</h3>
+                        <p>使用手机APP进行打印的操作指南</p>
+                        <a href="#">查看详情</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 热门问题区域 -->
+            <section class="faq-section">
+                <h2 class="section-title">热门问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleAnswer(this)">
+                            <h4>如何连接小米打印机到Wi-Fi网络？</h4>
+                            <span>+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>1. 确保打印机已开机并处于待机状态。<br>2. 打开小米打印APP，点击"添加打印机"。<br>3. 按照APP提示操作，选择您的Wi-Fi网络并输入密码。<br>4. 等待连接成功提示。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleAnswer(this)">
+                            <h4>打印机显示"缺纸"但纸盒中有纸怎么办？</h4>
+                            <span>+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>1. 检查纸张是否放置正确，确保纸张平整无褶皱。<br>2. 检查纸张传感器是否有异物阻挡。<br>3. 重启打印机尝试。<br>4. 如果问题持续，请联系客服。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleAnswer(this)">
+                            <h4>如何更换打印机的墨盒？</h4>
+                            <span>+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>1. 打开打印机前盖。<br>2. 等待打印头移动到更换位置。<br>3. 按下墨盒卡扣，取出旧墨盒。<br>4. 拆开新墨盒包装，安装到打印机中。<br>5. 关闭前盖，完成更换。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleAnswer(this)">
+                            <h4>手机无法发现打印机怎么办？</h4>
+                            <span>+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>1. 确保手机和打印机连接在同一Wi-Fi网络下。<br>2. 检查打印机是否处于可被发现状态。<br>3. 重启手机和打印机。<br>4. 更新小米打印APP到最新版本。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 底部信息 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <ul class="footer-links">
+                    <li><a href="#">关于我们</a></li>
+                    <li><a href="#">隐私政策</a></li>
+                    <li><a href="#">用户协议</a></li>
+                    <li><a href="#">客服中心</a></li>
+                </ul>
+                <div class="copyright">
+                    © 2023 小米公司 版权所有
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 展开/收起FAQ答案
+        function toggleAnswer(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('span');
+            
+            if (answer.classList.contains('active')) {
+                answer.classList.remove('active');
+                icon.textContent = '+';
+            } else {
+                // 关闭其他打开的答案
+                document.querySelectorAll('.faq-answer.active').forEach(item => {
+                    item.classList.remove('active');
+                    item.previousElementSibling.querySelector('span').textContent = '+';
+                });
+                
+                answer.classList.add('active');
+                icon.textContent = '-';
+            }
+        }
+        
+        // 搜索功能
+        document.querySelector('.search-box button').addEventListener('click', function() {
+            const searchTerm = document.querySelector('.search-box input').value;
+            if (searchTerm.trim() !== '') {
+                alert('搜索: ' + searchTerm);
+                // 实际应用中这里应该执行搜索逻辑
+            }
+        });
+        
+        // 回车键搜索
+        document.querySelector('.search-box input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.querySelector('.search-box button').click();
+            }
+        });
+    </script>
+</body>
+</html>
